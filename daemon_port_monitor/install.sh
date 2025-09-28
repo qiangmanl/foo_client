@@ -16,7 +16,7 @@ ENV_FILE="$port_monitor_daemon_dir/client.env"
 cat > "$ENV_FILE" <<EOF
     daemon_dir=$port_monitor_daemon_dir
     env_path=$ENV_FILE
-    port_record_file="$port_monitor_daemon_dir/ports.txt" 
+    port_record_file=$port_monitor_daemon_dir/ports.txt
     program_key="clash"
 EOF
 

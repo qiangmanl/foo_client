@@ -1,55 +1,62 @@
 import os
 import sys
-import time
-from utils import get_sys_running_ports, get_table_ports_from_file, add_port, save_ports_to_file, compare_lists_simple, del_port, check_nft_env, install_nft_env
-port_record_file = os.getenv("port_record_file")
-program_key = os.getenv("program_key")
+from utils import (
+    check_nft_env,
+    compare_ports_simple,
+    get_running_port_record, 
+    get_sys_running_ports, 
+    install_nft_env, 
+    nft_table_add_port,
+    nft_table_del_port, 
+    save_ports_to_record
+)
 
-def update(new_ports_list, existing_ports):
+
+#check install nft
+if not check_nft_env():
+    if install_nft_env():
+        print("init nft env")
+    else:
+        print("init nft env failed", file=sys.stderr)
+        exit(1)
+else:
+    print("nft env installed earlier")
+
+current_ports = get_sys_running_ports()
+record_ports = get_running_port_record()
+
+if os.getenv("check"):
+    print(f"currentports:{current_ports}")
+
+def update(current_ports:list, record_ports:list):
     
-    if not existing_ports:
+    if not record_ports:
         # 如果没有已有端口，则全部添加
         success_added = []
-        print(f'add ports: {new_ports_list}')
-        for port in new_ports_list:
-            if add_port(port):
+        print(f'add ports: {current_ports}')
+        for port in current_ports:
+            if nft_table_add_port(port):
                 success_added.append(port)
-        save_ports_to_file(success_added, port_record_file)
+        save_ports_to_record(success_added)
         return
-    else:
-        # 比较新旧端口
-        ports_remove_need, ports_add_need = compare_lists_simple(existing_ports, new_ports_list)
-        print(f'add ports: {ports_add_need}')
-        print(f'del ports: {ports_remove_need}')
-        
-        # 删除已移除的端口
-        for port in ports_remove_need:
-            del_port(port)
-            existing_ports.remove(port)
 
-        # 添加新端口
-        for port in ports_add_need:
-            add_port(port)
-            existing_ports.append(port)
-
-        # 更新文件
-        save_ports_to_file(existing_ports, port_record_file)
-
-if __name__ == "__main__":
+    ports_remove_need, ports_add_need = compare_ports_simple(record_ports, current_ports)
+    print(f'add ports: {ports_add_need}')
+    print(f'del ports: {ports_remove_need}')
     
-    if not check_nft_env():
-        if install_nft_env():
-            print("init nft env")
-        else:
-            print("init nft env failed", file=sys.stderr)
-            exit(1)
-    else:
-        print("nft env installed earlier")
-    if program_key:
-        new_ports_list = get_sys_running_ports(program_key)
-    table_ports = get_table_ports_from_file(port_record_file)
-    if new_ports_list != table_ports:
-        print("discovery new ports updated")
-        update(new_ports_list, table_ports)
-    else:
-        print(f'{time.time()}daemon ticker')
+    # 删除已移除的端口
+    for port in ports_remove_need:
+        nft_table_del_port(port)
+        record_ports.remove(port)
+
+    # 添加新端口
+    for port in ports_add_need:
+        nft_table_add_port(port)
+        record_ports.append(port)
+
+    # 更新文件
+    save_ports_to_record(record_ports)
+
+
+
+
