@@ -19,7 +19,7 @@ else
     echo "[OK] nft 已安装: $(nft --version)"
 fi
 
-echo "[INFO] 检查 Python3..."
+echo "[INFO] 检查 Python..."
 if ! command -v python3 >/dev/null 2>&1; then
     echo "[WARN] 未检测到 Python3，准备安装..."
     if command -v apt-get >/dev/null 2>&1; then

@@ -6,7 +6,7 @@ Type=oneshot
 User=root       
 Group=root
 EnvironmentFile=/opt/traffic_daemon/client.env
-ExecStart=python -u /opt/traffic_daemon/daemon.py
+ExecStart=python3 -u /opt/traffic_daemon/daemon.py
 StandardOutput=file:/tmp/traffic_reporter.log
 StandardError=file:/tmp/traffic_reporter.err
 
