@@ -1,0 +1,10 @@
+[Unit]
+Description=traffic_reporter.service timer
+
+[Timer]
+OnBootSec=1min         
+OnUnitActiveSec=1min   
+Unit=traffic_reporter.service  
+
+[Install]
+WantedBy=timers.target

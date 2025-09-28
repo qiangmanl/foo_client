@@ -1,0 +1,14 @@
+[Unit]
+Description=Port Monitor Service
+[Service]
+Type=oneshot
+User=root       
+Group=root
+EnvironmentFile=/opt/port_monitor_daemon/client.env
+ExecStart=python -u /opt/port_monitor_daemon/daemon.py
+StandardOutput=file:/tmp/port_monitor.log
+StandardError=file:/tmp/port_monitor.err
+
+[Install] 
+WantedBy=multi-user.target
+

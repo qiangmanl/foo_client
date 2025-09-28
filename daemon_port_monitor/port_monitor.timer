@@ -1,0 +1,10 @@
+[Unit]
+Description=port_monitor.service timer
+
+[Timer]
+OnBootSec=1min         
+OnUnitActiveSec=1min   
+Unit=port_monitor.service  
+RandomizedDelaySec=30s 
+[Install]
+WantedBy=timers.target
