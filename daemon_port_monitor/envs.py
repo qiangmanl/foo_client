@@ -4,8 +4,8 @@ import sys
 
 daemon_dir = os.getenv("daemon_dir", "")
 running_port_record_path = os.path.join(daemon_dir, "ports.txt") 
-running_port_handle_path = os.path.join(daemon_dir, "running_port_handle.sh") 
-nft_port_handle_path = os.path.join(daemon_dir, "nft_port_handle.sh") 
+running_port_handle_path = os.path.join(daemon_dir, "handle_running_port.sh") 
+nft_port_handle_path = os.path.join(daemon_dir, "handle_nft_port.sh") 
 nft_env_handle_path = os.path.join(daemon_dir, "handle_nft_env.sh")
 env_file_path = os.path.join(daemon_dir, "client.env")
 program_key = os.getenv("program_key","")
