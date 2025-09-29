@@ -49,17 +49,17 @@ def update(current_ports:list, record_ports:list):
     
     # 删除已移除的端口
     for port in ports_remove_need:
-        nft_table_del_port(port)
-        if check_mode:
-            print(f"del table port:{port}")
-        record_ports.remove(port)
+        if nft_table_del_port(port):
+            if check_mode:
+                print(f"del table port:{port}")
+            record_ports.remove(port)
 
     # 添加新端口
     for port in ports_add_need:
-        nft_table_add_port(port)
-        record_ports.append(port)
-        if check_mode:
-            print(f"add table port:{port}")
+        if nft_table_add_port(port):
+            if check_mode:
+                print(f"add table port:{port}")
+            record_ports.append(port)
 
     # 更新文件
     save_ports_to_record(record_ports)
