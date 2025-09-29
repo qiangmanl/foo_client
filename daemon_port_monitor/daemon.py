@@ -19,7 +19,10 @@ try:
     if not check_nft_env():
         if install_nft_env():
             if check_mode:
-                print("init nft env")
+                print("install nft env success")
+            else:
+                print("init nft env falier",file=sys.stderr)
+                exit(1)
         else:
             print("init nft env failed", file=sys.stderr)
             exit(1)
