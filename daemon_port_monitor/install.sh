@@ -17,7 +17,7 @@ cat > "$ENV_FILE" <<EOF
     daemon_dir=$port_monitor_daemon_dir
     env_path=$ENV_FILE
     port_record_file=$port_monitor_daemon_dir/ports.txt
-    program_key="xray"
+    program_key="chash"
 EOF
 
 echo ".env 已生成: $ENV_FILE"
