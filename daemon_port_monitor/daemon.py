@@ -15,15 +15,19 @@ check_mode = os.getenv("check")
 if check_mode:
     print("checking...")
 #check install nft
-if not check_nft_env():
-    if install_nft_env():
-        print("init nft env")
+try:
+    if not check_nft_env():
+        if install_nft_env():
+            if check_mode:
+                print("init nft env")
+        else:
+            print("init nft env failed", file=sys.stderr)
+            exit(1)
     else:
-        print("init nft env failed", file=sys.stderr)
-        exit(1)
-else:
-    print("nft env installed earlier")
-
+        print("nft env installed earlier")
+except:
+    print("init nft env error",file=sys.stderr)
+    exit(1)
 
 def update(current_ports:list, record_ports:list):
     
